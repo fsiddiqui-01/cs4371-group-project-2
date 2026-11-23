@@ -1,0 +1,8 @@
+start: 253636
+after removing duplicates: 253636 (removed 0)
+after removing rows without a date: 253636 (removed 0)
+after removing rows without a neighbourhood: 251297 (removed 2339)
+after removing invalid coordinates / outside Seattle: 216883 (removed 34414)
+number of neighbourhoods: 58
+date range: 2022-01-01 00:00:00 to 2024-12-31 23:55:00
+summary table rows: 2081
