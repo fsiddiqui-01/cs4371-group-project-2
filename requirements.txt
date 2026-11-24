@@ -1,0 +1,6 @@
+requests
+pandas
+pyarrow
+pyspark
+tabulate
+streamlit>=1.46

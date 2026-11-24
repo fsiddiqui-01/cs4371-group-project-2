@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 640" font-family="Helvetica, Arial, sans-serif" font-size="13" xmlns:c2pa="http://c2pa.org/manifest">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#555"/>
+    </marker>
+    <style>
+      .src{fill:#eef3fb;stroke:#4a6fa5}
+      .task{fill:#fff7e6;stroke:#c98a1b}
+      .app{fill:#eaf6ee;stroke:#2e8b57}
+      .cache{fill:#f3f3f3;stroke:#888;stroke-dasharray:5 4}
+      rect{stroke-width:1.5;rx:8;ry:8}
+      .h{font-weight:bold}
+      .s{font-size:11px;fill:#444}
+      line,path.l{stroke:#555;stroke-width:1.4;fill:none;marker-end:url(#a)}
+    </style>
+  </defs>
+
+  <text x="500" y="26" text-anchor="middle" font-size="18" class="h">SafeStay Seattle: system architecture</text>
+
+  <!-- sources -->
+  <text x="20" y="58" class="h" fill="#4a6fa5">Data sources and services</text>
+  <rect class="src" x="20" y="68" width="180" height="58"/><text x="110" y="92" text-anchor="middle" class="h">SPD incident reports</text><text x="110" y="110" text-anchor="middle" class="s">data.seattle.gov (Socrata)</text>
+  <rect class="src" x="215" y="68" width="180" height="58"/><text x="305" y="92" text-anchor="middle" class="h">LLMs</text><text x="305" y="110" text-anchor="middle" class="s">Groq gpt-oss-120b · Gemini</text>
+  <rect class="src" x="410" y="68" width="180" height="58"/><text x="500" y="92" text-anchor="middle" class="h">city_temperature.csv</text><text x="500" y="110" text-anchor="middle" class="s">Homework 2/4, 2020-2024</text>
+  <rect class="src" x="605" y="68" width="180" height="58"/><text x="695" y="92" text-anchor="middle" class="h">Xotelo hotel prices</text><text x="695" y="110" text-anchor="middle" class="s">backup: SerpApi</text>
+  <rect class="src" x="800" y="68" width="180" height="58"/><text x="890" y="92" text-anchor="middle" class="h">OpenStreetMap</text><text x="890" y="110" text-anchor="middle" class="s">Overpass API + MCPP GeoJSON</text>
+
+  <!-- cache -->
+  <line x1="110" y1="126" x2="110" y2="148"/><line x1="305" y1="126" x2="305" y2="148"/><line x1="500" y1="126" x2="500" y2="148"/><line x1="695" y1="126" x2="695" y2="148"/><line x1="890" y1="126" x2="890" y2="148"/>
+  <rect class="cache" x="20" y="150" width="960" height="40"/>
+  <text x="500" y="175" text-anchor="middle">cache/ : every API response and LLM reply saved with its time · 1 s between calls · reused instead of calling again</text>
+
+  <!-- tasks -->
+  <text x="20" y="222" class="h" fill="#c98a1b">Processing</text>
+  <rect class="task" x="20" y="232" width="200" height="70"/><text x="120" y="258" text-anchor="middle" class="h">Task 1: Spark pipeline</text><text x="120" y="276" text-anchor="middle" class="s">clean · classify · summarise</text><text x="120" y="292" text-anchor="middle" class="s">neighbourhood_month.parquet</text>
+  <rect class="task" x="250" y="232" width="160" height="70"/><text x="330" y="256" text-anchor="middle" class="h">Task 2: outlook</text><text x="330" y="276" text-anchor="middle" class="s">outlook(month)</text><text x="330" y="296" text-anchor="middle" class="s">uses Task 1</text>
+  <rect class="task" x="430" y="232" width="160" height="70"/><text x="510" y="256" text-anchor="middle" class="h">Task 6: best months</text><text x="510" y="276" text-anchor="middle" class="s">best_months()</text><text x="510" y="296" text-anchor="middle" class="s">uses Task 1 + temperatures</text>
+  <rect class="task" x="610" y="232" width="170" height="70"/><text x="695" y="256" text-anchor="middle" class="h">Task 4: hotels + geo</text><text x="695" y="274" text-anchor="middle" class="s">search_hotels() · nearby()</text><text x="695" y="290" text-anchor="middle" class="s">ray casting · haversine</text>
+  <rect class="task" x="800" y="232" width="180" height="70"/><text x="890" y="256" text-anchor="middle" class="h">Task 8: places</text><text x="890" y="276" text-anchor="middle" class="s">places(month, budget)</text><text x="890" y="296" text-anchor="middle" class="s">uses Tasks 2 + 4</text>
+  <rect class="task" x="20" y="320" width="200" height="50"/><text x="120" y="341" text-anchor="middle" class="h">Task 3: LLM vs data</text><text x="120" y="358" text-anchor="middle" class="s">offline report only</text>
+
+  <!-- arrows sources -> tasks -->
+  <line x1="110" y1="190" x2="110" y2="230"/>
+  <line x1="510" y1="190" x2="510" y2="230"/>
+  <line x1="695" y1="190" x2="695" y2="230"/>
+  <line x1="890" y1="190" x2="890" y2="230"/>
+  <line x1="220" y1="267" x2="248" y2="267"/>
+  <line x1="780" y1="267" x2="798" y2="267"/>
+  <line x1="120" y1="302" x2="120" y2="318"/>
+    <path class="l" d="M305,68 L305,42 L10,42 L10,443 L18,443"/>
+  <g stroke="#555" stroke-width="1.4" fill="none">
+    <path d="M330,302 L330,386 M510,302 L510,386 M695,302 L695,386 M890,302 L890,386 M330,386 L890,386"/>
+  </g>
+  <line x1="579" y1="386" x2="579" y2="410"/>
+  <!-- assistant -->
+  <text x="20" y="402" class="h" fill="#2e8b57">Task 5: assistant (task5/assistant.py)</text>
+  <rect class="app" x="20" y="412" width="140" height="62"/><text x="90" y="438" text-anchor="middle" class="h">1 Extract</text><text x="90" y="456" text-anchor="middle" class="s">LLM → JSON fields</text>
+  <rect class="app" x="178" y="412" width="140" height="62"/><text x="248" y="438" text-anchor="middle" class="h">2 Validate</text><text x="248" y="456" text-anchor="middle" class="s">types, ranges, dates</text>
+  <rect class="app" x="336" y="412" width="150" height="62"/><text x="411" y="434" text-anchor="middle" class="h">3 Decide</text><text x="411" y="451" text-anchor="middle" class="s">decline · merge ·</text><text x="411" y="466" text-anchor="middle" class="s">ask follow-up</text>
+  <rect class="app" x="504" y="412" width="150" height="62"/><text x="579" y="438" text-anchor="middle" class="h">4 Run tasks</text><text x="579" y="456" text-anchor="middle" class="s">2 · 4 · 6 · 8</text>
+  <rect class="app" x="672" y="412" width="140" height="62"/><text x="742" y="438" text-anchor="middle" class="h">5 Answer</text><text x="742" y="456" text-anchor="middle" class="s">LLM, results only</text>
+  <rect class="app" x="830" y="412" width="150" height="62"/><text x="905" y="434" text-anchor="middle" class="h">6 Number check</text><text x="905" y="451" text-anchor="middle" class="s">pass → show text</text><text x="905" y="466" text-anchor="middle" class="s">fail → retry / tables</text>
+  <line x1="160" y1="443" x2="176" y2="443"/><line x1="318" y1="443" x2="334" y2="443"/><line x1="486" y1="443" x2="502" y2="443"/><line x1="654" y1="443" x2="670" y2="443"/><line x1="812" y1="443" x2="828" y2="443"/>
+    
+  <!-- app -->
+  <rect class="app" x="180" y="510" width="460" height="100"/>
+  <text x="410" y="536" text-anchor="middle" class="h">Streamlit web app (app.py), runs locally</text>
+  <text x="410" y="558" text-anchor="middle" class="s">Chat page: conversation + collected fields in st.session_state · New conversation button</text>
+  <text x="410" y="576" text-anchor="middle" class="s">Map page: month + budget → hotels and attractions in two colours, top 10 / top 5 tables</text>
+  <text x="410" y="594" text-anchor="middle" class="s">Sources and price age on every answer · © OpenStreetMap · st.cache_data · spinners</text>
+  <rect class="app" x="680" y="510" width="300" height="100"/>
+  <text x="830" y="540" text-anchor="middle" class="h">Task 7: evaluation</text>
+  <text x="830" y="562" text-anchor="middle" class="s">23 hand-labelled conversations</text>
+  <text x="830" y="580" text-anchor="middle" class="s">field match · follow-up/decline · number check</text>
+  <text x="830" y="598" text-anchor="middle" class="s">time and API calls → t7_evaluation.csv</text>
+  <rect class="src" x="20" y="530" width="130" height="60"/><text x="85" y="556" text-anchor="middle" class="h">Traveller</text><text x="85" y="574" text-anchor="middle" class="s">browser</text>
+  <line x1="150" y1="560" x2="178" y2="560"/>
+  <path class="l" d="M260,510 L260,494 L90,494 L90,476"/>
+  <path class="l" d="M905,474 L905,494 L560,494 L560,508"/>
+  <path class="l" d="M980,560 L993,560 L993,443 L982,443"/><text x="988" y="625" text-anchor="end" class="s">Task 7 calls assistant.handle() directly</text>
+<metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTpkMTI0NTlhYi1hNTBlLTRhNTktODdlZS1hNmM0MzA5ZGZiYzMAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaAoNr+I1853Q14Gu/sKbC2QAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDplNjFkMGFlMy1lZjEzLTRiNTUtOWI2Ny04NTJiZmVlNTE0NzlscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNoisRbETlCjvnBgqWwijG7VAAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggGYhoHZLZgppBeshmQRxFQ0Y9cwsYICZiBFod3ChqNrykZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaDoPz0hDvoyaqOikY1lrJ+8AAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRMAAAAAAAAAAAAAAAAZGhhc2hYIFXPQzpBpxsYLVV7QNrmGNAwjIuJOcoO+ttK2B1I3T2uZG5hbWVuanVtYmYgbWFuaWZlc3RqZXhjbHVzaW9uc4GiZXN0YXJ0GSCQZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOmQxMjQ1OWFiLWE1MGUtNGE1OS04N2VlLWE2YzQzMDlkZmJjMy9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjQ2NTk3NDFiLWE1NjItNDdkNC05MGRlLTAwMzhiMzg5ZTA2ZXJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCAZiGgdktmCmkF6yGZBHEVDRj1zCxggJmIEWh3cKGo2vKJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggOaxL3uLw6+FWa7MBYbZ95sGKw//ww/Ibo2GQbTZlpSGiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggd0fGyZ440cUcDfkILPWfrKbA8kNQzFyW1Xr5nxmq8il0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQN/gu/Q0mN8+lznenkXl9SfrjEAF4c+VPWJFj4w8IoXVe5EPR01L+r8VikArKmegI7TdjxjN4gk7vQ+UmpxfnBE=</c2pa:manifest></metadata></svg>
