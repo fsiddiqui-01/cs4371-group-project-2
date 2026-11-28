@@ -1,0 +1,25 @@
+Task 3 - LLM crime levels vs Seattle Police Department data (2022-2024)
+Generated: 2026-11-28T02:07:59.293595+00:00
+Real figure = average reported incidents per month per neighbourhood (Task 1 table / 36 months).
+LLM top 5 = highest rating, ties broken by the LLM's incident estimate.
+pct_error = |LLM estimate - real| / real x 100, median over matched neighbourhoods.
+
+run                         valid  matched  spearman(rating)  spearman(est)  top5  median % err 
+------------------------------------------------------------------------------------------------
+groq_without_data           True    58/58   0.398             0.44           2/5   75.5         
+gemini_without_data         True    58/58   0.766             0.797          2/5   95.0         
+groq_with_data              True    58/58   0.98              1.0            5/5   0.0          
+gemini_with_data            True    58/58   0.98              1.0            5/5   0.0          
+
+[groq_without_data] model=openai/gpt-oss-120b
+  skipped (0): none
+  invented (0): none
+[gemini_without_data] model=gemini-3.8-flash
+  skipped (0): none
+  invented (0): none
+[groq_with_data] model=openai/gpt-oss-120b
+  skipped (0): none
+  invented (0): none
+[gemini_with_data] model=gemini-3.8-flash
+  skipped (0): none
+  invented (0): none
